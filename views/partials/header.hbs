@@ -1,0 +1,54 @@
+
+    
+    <div class="site-branding-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="logo">
+                        <h1><a href="/">A<span>nime</span>T<span>heater</span></a></h1>
+                    </div>
+                </div>
+                
+                <div class="col-sm-6">
+                    <div class="shopping-item">
+                        <a href="/shopping-cart">Cart - <span class="cart-amunt">${{session.cart.totalPrice}}</span> <i class="fa fa-shopping-cart"></i> <span class="product-count">{{session.cart.totalQty}}</span></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> <!-- End site branding area -->
+    
+    <div class="mainmenu-area">
+        <div class="container">
+            <div class="row">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div> 
+                <div class="navbar-collapse collapse">
+
+                    <ul class="nav navbar-nav">
+                        <li {{#equal title "home"}} class="active" {{/equal}}><a href="/">Home</a></li>
+                        <li {{#equal title "shop"}} class="active" {{/equal}}><a href="/shop">Shop</a></li>
+                        <li {{#equal title "shopping-cart"}} class="active" {{/equal}}><a href="/shopping-cart">Cart</a></li>
+                        <li {{#equal title "checkout"}} class="active" {{/equal}}><a href="/checkout">Checkout</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+
+                    <ul class="nav navbar-nav navbar-right">
+                        {{#if login}}
+                            <li {{#equal title "profile"}} class="active" {{/equal}} ><a href="/profile">My Account</a></li>
+                            <li {{#equal title "logout"}} class="active" {{/equal}} ><a href="/logout">Logout</a></li>
+                        {{else}}
+                            <li {{#equal title "login"}} class="active" {{/equal}} ><a href="/login">Login</a></li>
+                            <li {{#equal title "signup"}} class="active" {{/equal}}><a href="/signup">Sign Up</a></li>
+                        {{/if}}
+                    </ul>
+                </div>  
+            </div>
+        </div>
+    </div> <!-- End mainmenu area -->

@@ -1,0 +1,32 @@
+<div class="row">
+     <div class="col-md-8 mx-auto">
+          <h1>User Profile</h1>
+          <hr>
+          <h2>My orders:</h2>
+
+          {{#each orders }}
+          <div class="panel panel-default">
+               <div class="panel-body">
+                    {{#each this.items}}
+                    <ul class="list-group">
+                         <li class="list-group-item">
+
+                              <td class="product-thumbnail">
+                                   <a href="single-product.html">
+                                        <img width="145" height="145" alt="poster_1_up" class="shop_thumbnail" src="{{ this.item.imagePath }}">
+                                   </a>
+                              </td>
+
+                              <span class="badge badge-secondary badge-pill">${{this.price}}</span>
+                              
+                              <span><h4>{{this.item.title}} | {{this.qty}} Units</h4></span>
+                              
+                         </li>
+                    </ul>
+                    {{/each}}
+               </div>
+               <div class="panel-footer" style="font-weight: bold">$ {{ this.cart.totalPrice }}</div>
+          </div>
+          {{/each}}
+     </div>
+</div>
