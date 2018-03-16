@@ -11,8 +11,12 @@ var session = require('express-session');
 var MongoStore = require('connect-mongo') (session);
 var passport = require('passport');
 var flash = require('connect-flash');
-var index = require('./routes/index');
-var users = require('./routes/user');
+
+/*    routes    */
+var indexRoutes = require('./routes/index');
+var cartRoutes = require('./routes/cart');
+var userRoutes = require('./routes/user');
+
 // mongodb://yousefGh:THEthe123@ds229008.mlab.com:29008/anime-theater
 // MONGO connection
 var mongoose = require('mongoose');
@@ -20,9 +24,6 @@ var mongoose = require('mongoose');
 var uristring = 
   process.env.MONGODB_URI || 
   'mongodb://localhost:27017/anime-theater';
-
-
-
 
   mongoose.connect(uristring, function (err, res) {
     if (err) { 
@@ -85,9 +86,12 @@ app.use(function(req, res, next) {
   next();
 });
 
-app.use(favicon(path.join(__dirname, 'public','img','favicon.ico'))); 
-app.use('/', index);
-app.use('/user', users);
+app.use(favicon(path.join(__dirname, 'public','img','favicon.ico')));
+
+/*    routes usage    */
+app.use('/', indexRoutes);
+app.use('/', cartRoutes);
+app.use('/', userRoutes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

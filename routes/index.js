@@ -8,11 +8,12 @@ var nodemailer = require('nodemailer');
 var Order = require('../models/order');
 var Cart = require('../models/cart');
 var Product = require('../models/product');
+
 /* GET home page. */
 router.get('/', function (req, res, next) {
   var successMsg = req.flash('success')[0];
   res.render('entity/index', {
-    title: 'home',
+    title: 'Home',
     successMsg: successMsg,
     noMessages: !successMsg
   });
@@ -32,56 +33,6 @@ router.get('/shop', function (req, res, next) {
         productsArr: productChunks
       });
     });
-});
-
-router.get('/add-to-cart/:id', function (req, res, next) {
-  var productId = req.params.id;
-  var cart = new Cart(req.session.cart
-    ? req.session.cart
-    : {});
-
-  Product.findById(productId, function (err, product) {
-    if (err) {
-      return res.redirect('/');
-    }
-    cart.add(product, product.id);
-    req.session.cart = cart;
-    console.log(req.session.cart);
-    res.redirect('/shop');
-  });
-});
-
-router.get('/reduce/:id', function (req, res, next) {
-  var productId = req.params.id;
-  var cart = new Cart(req.session.cart
-    ? req.session.cart
-    : {});
-
-  cart.reduceByOne(productId);
-  req.session.cart = cart;
-  res.redirect('/shopping-cart')
-});
-
-router.get('/remove/:id', function (req, res, next) {
-  var productId = req.params.id;
-  var cart = new Cart(req.session.cart
-    ? req.session.cart
-    : {});
-
-  cart.removeAll(productId);
-  req.session.cart = cart;
-  res.redirect('/shopping-cart')
-});
-
-router.get('/increment/:id', function (req, res, next) {
-  var productId = req.params.id;
-  var cart = new Cart(req.session.cart
-    ? req.session.cart
-    : {});
-
-  cart.incrementByOne(productId);
-  req.session.cart = cart;
-  res.redirect('/shopping-cart')
 });
 
 router.get('/shopping-cart', function (req, res, next) {
@@ -273,87 +224,6 @@ router.post('/checkout', isLoggedIn, function (req, res, next) {
   //   .messages
   //   .create({to: '+1966500853023', from: '+18082022785 ', body: 'This is the ship that made the Kessel Run in fourteen parsecs?'})
   //   .then(message => console.log(message.sid));
-
-});
-
-
-//\\-------------------------------|| USER ||-------------------------------//\\
-
-router.get('/profile', isLoggedIn, function (req, res, next) {
-  Order
-    .find({
-      user: req.user
-    }, function (err, orders) {
-      if (err) {
-        return res.write('Error!');
-      }
-      var cart;
-      orders.forEach(function (order) {
-        cart = new Cart(order.cart);
-        order.items = cart.generateArray();
-      });
-      res.render('user/profile', {orders: orders});
-    });
-});
-
-router.get('/logout', isLoggedIn, function (req, res, next) {
-  req.logOut();
-  res.redirect('/');
-});
-
-router.use('/', notLoggedIn, function (req, res, next) {
-  next();
-});
-
-router.get('/login', function (req, res, next) {
-  var messages = req.flash('error');
-  res.render('user/login', {
-    title: 'login',
-    csrfToken: req.csrfToken(),
-    messages: messages,
-    hasErrors: messages.length > 0
-  });
-});
-
-router.post('/login', passport.authenticate('local.signin', {
-  successRedirect: '/',
-  failureRedirect: '/login',
-  failureFlash: true
-}), function (req, res, next) {
-
-  if (req.session.oldUrl) {
-    var oldUrl = req.session.oldUrl;
-    req.session.oldUrl = null;
-    res.redirect(oldUrl);
-  } else {
-    res.redirect('/user/profile');
-  }
-
-});
-
-router.get('/signup', function (req, res, next) {
-  var messages = req.flash('error');
-  res.render('user/signup', {
-    title: 'signup',
-    csrfToken: req.csrfToken(),
-    messages: messages,
-    hasErrors: messages.length > 0
-  });
-});
-
-router.post('/signup', passport.authenticate('local.signup', {
-  successRedirect: '/',
-  failureRedirect: '/signup',
-  failureFlash: true
-}), function (req, res, next) {
-
-  if (req.session.oldUrl) {
-    var oldUrl = req.session.oldUrl;
-    req.session.oldUrl = null;
-    res.redirect(oldUrl);
-  } else {
-    res.redirect('/user/profile');
-  }
 
 });
 
